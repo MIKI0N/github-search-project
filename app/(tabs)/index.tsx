@@ -1,31 +1,16 @@
-import {
-  Image,
-  StyleSheet,
-  Platform,
-  ImageBackground,
-  View,
-} from "react-native";
+import { StyleSheet, ImageBackground, View } from "react-native";
 
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 
 export default function HomeScreen() {
   return (
-    <ThemedView style={{ flex: 1 }}>
+    <ThemedView style={styles.container}>
       <ImageBackground
-        style={{ flex: 0.35 }}
+        style={styles.imageBg}
         source={require("@/assets/images/codeBg.gif")}
       >
-        <View
-          style={{
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0,0,0,0.8)",
-          }}
-        />
+        <View style={styles.absoluteView} />
 
         <View style={styles.titleContainer}>
           <ThemedText type="title">GitHub Search</ThemedText>
@@ -33,7 +18,7 @@ export default function HomeScreen() {
         </View>
       </ImageBackground>
 
-      <View style={{marginHorizontal: 20, marginTop: 30}}>
+      <View style={styles.innerContainer}>
         <ThemedView style={styles.stepContainer}>
           <ThemedText>
             Find the GitHub repositories and users of your choice. You'll surely
@@ -62,6 +47,14 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  container: { flex: 1 },
+  imageBg: { flex: 0.35 },
+  absoluteView: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.8)",
+  },
   titleContainer: {
     flex: 1,
     alignItems: "center",
@@ -69,15 +62,9 @@ const styles = StyleSheet.create({
     top: 25,
     color: "white",
   },
+  innerContainer: { marginHorizontal: 20, marginTop: 30 },
   stepContainer: {
     gap: 8,
     marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
   },
 });

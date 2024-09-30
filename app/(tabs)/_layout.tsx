@@ -4,6 +4,7 @@ import React from "react";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { StyleSheet } from "react-native";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -20,14 +21,16 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
-            <TabBarIcon
-              name={"logo-github"}
-              color={color}
-            />
+            <TabBarIcon name={"logo-github"} color={color} />
           ),
-          tabBarLabelStyle: {display: 'none'},
-          tabBarItemStyle: {flex: 0.45, backgroundColor: Colors[colorScheme ?? "light"].gitHubIconBg},
-          tabBarIconStyle: {bottom: 2},
+          tabBarLabelStyle: styles.gitHubTabLabelStyle,
+          tabBarItemStyle: [
+            styles.gitHubTabItemStyle,
+            {
+              backgroundColor: Colors[colorScheme ?? "light"].gitHubIconBg,
+            },
+          ],
+          tabBarIconStyle: styles.gitHubTabIconStyle,
         }}
       />
       <Tabs.Screen
@@ -58,3 +61,9 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  gitHubTabLabelStyle: { display: "none" },
+  gitHubTabItemStyle: { flex: 0.45 },
+  gitHubTabIconStyle: { bottom: 2 },
+});

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -9,9 +10,9 @@ import {
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useState } from "react";
 import SearchComponent from "@/components/SearchComponent";
 import { useThemeColor } from "@/hooks/useThemeColor";
+
 import { Tw } from "./users";
 
 export default function UsersScreen() {
@@ -32,41 +33,30 @@ export default function UsersScreen() {
   };
 
   return (
-    <ThemedView style={{ flex: 1 }}>
+    <ThemedView style={styles.container}>
       <SearchComponent
         sendDataToParent={handleDataFromChild}
         imageBg={require("@/assets/images/reposBg.jpg")}
         searchType="REPOSITORY"
       />
 
-      <View style={{ paddingLeft: 0, paddingTop: 0, flex: 1 }}>
+      <View style={styles.container}>
         {error && (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 10,
-              marginHorizontal: 20,
-            }}
-          >
-            <ThemedText type="subtitle">😨</ThemedText>
-            <ThemedText style={{ textAlign: "center" }}>
+          <View style={styles.errorContainer}>
+            <ThemedText type="title">😨</ThemedText>
+            <ThemedText style={styles.errorContainerTextStyle}>
               Something went wrong when trying to contact the GitHub API, please
               try again later
+            </ThemedText>
+
+            <ThemedText style={styles.errorContainerTextStyle}>
+              Have you set your GitHub API token?
             </ThemedText>
           </View>
         )}
 
         {loading && (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
+          <View style={styles.emptyContainer}>
             <ActivityIndicator size="large" color={textColor} />
             <ThemedText>Loading...</ThemedText>
           </View>
@@ -77,57 +67,43 @@ export default function UsersScreen() {
             data={data.search.edges}
             keyExtractor={(item, index) => item.node.id ?? index.toString()}
             renderItem={({ item }) => {
-              /*
-               * Possible bug from the GitHub API, sometimes it returns empty nodes
-               * because they're related to other type of results we never asked for
-               */
               if (item.node.__typename !== "Repository") return null;
 
               return (
-                <TouchableOpacity
-                  onPress={() => {
-                    /* Open repository page */
-                  }}
-                >
+                <TouchableOpacity>
                   <View
-                    style={{
-                      flex: 1,
-                      paddingVertical: 10,
-                      borderWidth: 1.5,
-                      margin: 5,
-                      paddingHorizontal: 10,
-                      borderColor: bgColor,
-                      borderRadius: 5,
-                      gap: 10,
-                    }}
+                    style={[styles.itemContainer, { borderColor: bgColor }]}
                   >
-                    <ThemedText type="subtitle" style={{ fontWeight: "bold" }}>
+                    <ThemedText type="subtitle" style={styles.itemTitleRepo}>
                       {item.node.name}
                     </ThemedText>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "stretch",
-                      }}
-                    >
-                      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={styles.itemHorizontalContainer}>
+                      <View style={styles.itemOwnerContainer}>
                         <ThemedText type="defaultSemiBold">Owner</ThemedText>
                         <Image
                           source={{ uri: item.node.owner?.avatarUrl }}
-                          style={{ width: 50, height: 50, borderRadius: 25 }}
+                          style={styles.itemOwnerAvatar}
                         />
                         <ThemedText>{item.node.owner?.login}</ThemedText>
                       </View>
 
-                      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                      <View style={styles.itemRepoStarsContainer}>
                         <ThemedText type="defaultSemiBold">Stars</ThemedText>
                         <ThemedText type="subtitle">⭐</ThemedText>
                         <ThemedText>{item.node.stargazerCount}</ThemedText>
                       </View>
                     </View>
 
-                    <ThemedText darkColor="darkgray" style={{textAlign: 'center'}}>{item.node.url}</ThemedText>
-                    <ThemedText numberOfLines={3} style={{textAlign: 'center'}}>
+                    <ThemedText
+                      darkColor="darkgray"
+                      style={styles.errorContainerTextStyle}
+                    >
+                      {item.node.url}
+                    </ThemedText>
+                    <ThemedText
+                      numberOfLines={3}
+                      style={styles.errorContainerTextStyle}
+                    >
                       {item.node.description}
                     </ThemedText>
                   </View>
@@ -155,6 +131,46 @@ export default function UsersScreen() {
 }
 
 const styles = StyleSheet.create({
+  container: { flex: 1 },
+  errorContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10,
+    marginHorizontal: 20,
+  },
+  errorContainerTextStyle: { textAlign: "center" },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10,
+  },
+  itemContainer: {
+    flex: 1,
+    paddingVertical: 10,
+    borderWidth: 1.5,
+    margin: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    gap: 10,
+  },
+  itemTitleRepo: { fontWeight: "bold" },
+  itemHorizontalContainer: {
+    flexDirection: "row",
+    alignItems: "stretch",
+  },
+  itemOwnerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  itemOwnerAvatar: { width: 50, height: 50, borderRadius: 25 },
+  itemRepoStarsContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   titleContainer: {
     flex: 1,
     alignItems: "center",

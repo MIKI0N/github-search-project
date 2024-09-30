@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -10,7 +11,6 @@ import {
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { ApolloError } from "@apollo/client";
-import { useState } from "react";
 import SearchComponent from "@/components/SearchComponent";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
@@ -38,41 +38,30 @@ export default function UsersScreen() {
   };
 
   return (
-    <ThemedView style={{ flex: 1 }}>
+    <ThemedView style={styles.containter}>
       <SearchComponent
         sendDataToParent={handleDataFromChild}
         imageBg={require("@/assets/images/usersBg.jpg")}
         searchType="USER"
       />
 
-      <View style={{ paddingLeft: 0, paddingTop: 0, flex: 1 }}>
+      <View style={styles.containter}>
         {error && (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 10,
-              marginHorizontal: 20,
-            }}
-          >
+          <View style={styles.errorContainer}>
             <ThemedText type="title">😨</ThemedText>
-            <ThemedText style={{textAlign: 'center'}}>
+            <ThemedText style={styles.errorContainerTextStyle}>
               Something went wrong when trying to contact the GitHub API, please
               try again later
+            </ThemedText>
+
+            <ThemedText style={styles.errorContainerTextStyle}>
+              Have you set your GitHub API token?
             </ThemedText>
           </View>
         )}
 
         {loading && (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
+          <View style={styles.emptyContainer}>
             <ActivityIndicator size="large" color={textColor} />
             <ThemedText>Loading...</ThemedText>
           </View>
@@ -90,28 +79,16 @@ export default function UsersScreen() {
               if (item.node.__typename !== "User") return null;
 
               return (
-                <TouchableOpacity
-                  onPress={() => {
-                    /* Abre el perfil del usuario */
-                  }}
-                >
+                <TouchableOpacity>
                   <View
-                    style={{
-                      flexDirection: "row",
-                      paddingVertical: 10,
-                      borderWidth: 1.5,
-                      margin: 5,
-                      paddingHorizontal: 10,
-                      borderColor: bgColor,
-                      borderRadius: 5,
-                    }}
+                    style={[styles.itemContainer, { borderColor: bgColor }]}
                   >
                     <Image
                       source={{ uri: item.node.avatarUrl }}
-                      style={{ width: 50, height: 50, borderRadius: 25 }}
+                      style={styles.itemOwnerAvatar}
                     />
-                    <View style={{ marginLeft: 10 }}>
-                      <ThemedText style={{ fontWeight: "bold" }}>
+                    <View style={styles.itemOwnerNameContainer}>
+                      <ThemedText style={styles.itemOwnerNameText}>
                         {item.node.userName || item.node.login}
                       </ThemedText>
                       <ThemedText>{item.node.url}</ThemedText>
@@ -121,14 +98,7 @@ export default function UsersScreen() {
               );
             }}
             ListEmptyComponent={() => (
-              <ThemedView
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  gap: 10,
-                }}
-              >
+              <ThemedView style={styles.emptyContainer}>
                 <ThemedText type="subtitle">No results found!</ThemedText>
                 <ThemedText>Try searching something else</ThemedText>
               </ThemedView>
@@ -141,22 +111,30 @@ export default function UsersScreen() {
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  containter: { flex: 1 },
+  errorContainer: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
-    top: 25,
-    color: "white",
+    alignItems: "center",
+    gap: 10,
+    marginHorizontal: 20,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  errorContainerTextStyle: { textAlign: "center" },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
+  itemContainer: {
+    flexDirection: "row",
+    paddingVertical: 10,
+    borderWidth: 1.5,
+    margin: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
   },
+  itemOwnerAvatar: { width: 50, height: 50, borderRadius: 25 },
+  itemOwnerNameContainer: { marginLeft: 10 },
+  itemOwnerNameText: { fontWeight: "bold" },
 });
