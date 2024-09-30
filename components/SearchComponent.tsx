@@ -1,9 +1,15 @@
-import { ImageBackground, View, StyleSheet, TextInput } from "react-native";
-import { ThemedText } from "./ThemedText";
 import { useCallback, useEffect, useState } from "react";
+import {
+  ImageBackground,
+  View,
+  StyleSheet,
+  TextInput,
+  Text,
+} from "react-native";
 import debounce from "lodash.debounce";
+
 import { gql, useLazyQuery } from "@apollo/client";
-import { Tw } from "@/app/(tabs)/users";
+import { ApolloResponse } from "@/app/(tabs)/users";
 
 export const SEARCH_GITHUB = gql`
   query searchGithub($query: String!, $type: SearchType!) {
@@ -35,7 +41,7 @@ export const SEARCH_GITHUB = gql`
 `;
 
 interface SearchComponentProps {
-  sendDataToParent: (data: Tw) => void;
+  sendDataToParent: (data: ApolloResponse) => void;
   imageBg: NodeRequire;
   searchType: "USER" | "REPOSITORY";
 }
@@ -52,7 +58,7 @@ export default function SearchComponent({
     debounce((text) => {
       if (text.length > 0)
         searchUsers({ variables: { query: text, type: searchType } });
-    }, 500), // Tiempo de debounce
+    }, 500),
     []
   );
 
@@ -66,30 +72,16 @@ export default function SearchComponent({
   }, [data, loading, error]);
 
   return (
-    <ImageBackground style={{ flex: 0.35 }} source={imageBg as any}>
-      <View
-        style={{
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-          backgroundColor: "rgba(0,0,0,0.8)",
-        }}
-      />
+    <ImageBackground style={styles.imageRootContainer} source={imageBg as any}>
+      <View style={styles.absoluteView} />
 
       <View style={styles.titleContainer}>
-        <ThemedText type="title">
+        <Text style={styles.titleRootText}>
           {searchType === "USER" ? "Users" : "Repositories"}
-        </ThemedText>
+        </Text>
 
         <TextInput
-          style={{
-            width: "65%",
-            backgroundColor: "white",
-            borderRadius: 20,
-            paddingHorizontal: 10,
-            paddingVertical: 5,
-            marginTop: 20,
-          }}
+          style={styles.textInputStyle}
           value={searchText}
           onChangeText={onChangeSearch}
           placeholder="Type here"
@@ -100,6 +92,22 @@ export default function SearchComponent({
 }
 
 const styles = StyleSheet.create({
+  titleRootText: { fontSize: 30, fontWeight: "bold", color: "white" },
+  imageRootContainer: { flex: 0.35 },
+  absoluteView: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.8)",
+  },
+  textInputStyle: {
+    width: "65%",
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginTop: 20,
+  },
   titleContainer: {
     flex: 1,
     alignItems: "center",

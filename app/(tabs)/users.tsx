@@ -14,7 +14,7 @@ import { ApolloError } from "@apollo/client";
 import SearchComponent from "@/components/SearchComponent";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
-export type Tw = {
+export type ApolloResponse = {
   data: any;
   loading: boolean;
   error: ApolloError | undefined;
@@ -27,13 +27,13 @@ export default function UsersScreen() {
     "background"
   );
 
-  const [{ data, loading, error }, setDataFromAPI] = useState<Tw>({
+  const [{ data, loading, error }, setDataFromAPI] = useState<ApolloResponse>({
     data: null,
     loading: false,
     error: undefined,
   });
 
-  const handleDataFromChild = (dataReceived: Tw) => {
+  const handleDataFromChild = (dataReceived: ApolloResponse) => {
     setDataFromAPI(dataReceived);
   };
 

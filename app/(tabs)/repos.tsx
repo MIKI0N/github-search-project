@@ -13,7 +13,7 @@ import { ThemedView } from "@/components/ThemedView";
 import SearchComponent from "@/components/SearchComponent";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
-import { Tw } from "./users";
+import { ApolloResponse } from "./users";
 
 export default function UsersScreen() {
   const textColor = useThemeColor({ light: "black", dark: "white" }, "text");
@@ -22,13 +22,13 @@ export default function UsersScreen() {
     "background"
   );
 
-  const [{ data, loading, error }, setDataFromAPI] = useState<Tw>({
+  const [{ data, loading, error }, setDataFromAPI] = useState<ApolloResponse>({
     data: null,
     loading: false,
     error: undefined,
   });
 
-  const handleDataFromChild = (dataReceived: Tw) => {
+  const handleDataFromChild = (dataReceived: ApolloResponse) => {
     setDataFromAPI(dataReceived);
   };
 

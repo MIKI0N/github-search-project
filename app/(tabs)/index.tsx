@@ -1,4 +1,4 @@
-import { StyleSheet, ImageBackground, View } from "react-native";
+import { StyleSheet, ImageBackground, View, Text } from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -13,8 +13,8 @@ export default function HomeScreen() {
         <View style={styles.absoluteView} />
 
         <View style={styles.titleContainer}>
-          <ThemedText type="title">GitHub Search</ThemedText>
-          <ThemedText type="defaultSemiBold">Ready to get inspired?</ThemedText>
+          <Text style={styles.titleRootText}>GitHub Search</Text>
+          <Text style={styles.titleRootSubText}>Ready to get inspired?</Text>
         </View>
       </ImageBackground>
 
@@ -67,4 +67,6 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 8,
   },
+  titleRootText: { fontSize: 30, fontWeight: "bold", color: "white" },
+  titleRootSubText: { fontSize: 20, fontWeight: "bold", color: "white" },
 });
