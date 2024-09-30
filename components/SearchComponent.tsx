@@ -13,7 +13,7 @@ import { ApolloResponse } from "@/app/(tabs)/users";
 
 export const SEARCH_GITHUB = gql`
   query searchGithub($query: String!, $type: SearchType!) {
-    search(query: $query, type: $type, first: 50) {
+    search(query: $query, type: $type, first: 80) {
       edges {
         node {
           ... on User {
