@@ -29,16 +29,16 @@ export default function HomeScreen() {
         <ThemedView style={styles.stepContainer}>
           <ThemedText type="subtitle">Users</ThemedText>
           <ThemedText>
-            Search for users by typing in the search bar. Tap on a user to see
-            their details.
+            Search for users by going to the Users tab and typing in the search
+            bar.
           </ThemedText>
         </ThemedView>
 
         <ThemedView style={styles.stepContainer}>
           <ThemedText type="subtitle">Repos</ThemedText>
           <ThemedText>
-            Search for repositories by typing in the search bar. Tap on a
-            repository to see its details.
+            Search for repositories by going to theh Repos tab and typing in the
+            search bar.
           </ThemedText>
         </ThemedView>
       </View>
